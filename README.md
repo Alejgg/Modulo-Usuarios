@@ -6,9 +6,9 @@ CAMBIA LA IP, USUARIO Y CONTRASEÑA DE LOS ARCHIVOS "bd/conexion2.php" y "bd/con
 
 usuarios por default
 
-email: admin@admin.com 
+email: admin@admin.com
 contraseña: admin
 
-email: consulta@consulta.com 
+email: consulta@consulta.com
 contraseña: consulta
 
