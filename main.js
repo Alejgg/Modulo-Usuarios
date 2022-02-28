@@ -97,20 +97,32 @@ $(document).ready(function () {
                 if (data == 1) {
                     Swal.fire({
                         type: 'error',
-                        title: 'Correo Electronico Repetido, Reactivando',
+                        title: 'Correo Electrónico Repetido, Reactivando',
+                    });
+                    tablaUsuarios.ajax.reload(null, false);
+                } else if (data == 2) {
+                    Swal.fire({
+                        type: 'error',
+                        title: '¡Campos Vacíos! Por favor, llene todos los campos',
+                    });
+                    tablaUsuarios.ajax.reload(null, false);
+                } else if (data == 4) {
+                    Swal.fire({
+                        type: 'error',
+                        title: '¡Correo Electrónico Repetido!',
                     });
                     tablaUsuarios.ajax.reload(null, false);
                 } else if (data == 0) {
                     Swal.fire({
                         type: 'success',
-                        title: 'Exito!',
+                        title: '¡Éxito!',
                     });
                     tablaUsuarios.ajax.reload(null, false);
                 } else {
                     tablaUsuarios.ajax.reload(null, false);
                     Swal.fire({
                         type: 'info',
-                        title: 'Accion realizada',
+                        title: 'Acción realizada',
                     });
                 }
 
@@ -160,10 +172,11 @@ $(document).ready(function () {
         id = parseInt($(this).closest('tr').find('td:eq(0)').text());
         email = fila.find('td:eq(1)').text();
         opcion = 3; //eliminar  confirm("¿Está seguro de borrar el registro " + email + "?")      
-        var respuesta = Swal.fire({
-            type: 'question',
-            title: '¿Estas seguro de borrar el registro ' + email + '?',
-        });
+        var respuesta = confirm("¿Está seguro de borrar el registro " + email + "?");
+        //Swal.fire({
+        //     type: 'warning',
+        //     title: 'Usuario ' + email + ' Eliminado',
+        // });
         if (respuesta) {
             $.ajax({
                 url: "bd/crud.php",
@@ -176,6 +189,11 @@ $(document).ready(function () {
                 },
                 success: function () {
                     tablaUsuarios.row(fila.parents('tr')).remove().draw();
+                    Swal.fire(
+                        '¡Eliminado!',
+                        'El usuario ha sido eliminado...',
+                        'success'
+                    );
                 }
             });
         }

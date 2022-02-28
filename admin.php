@@ -1,7 +1,9 @@
 <?php
 
 session_start();
-
+// include_once '../bd/conexion2.php';
+// $objeto = new Conexion2();
+// $conexion = $objeto->Conectar2();
 if ($_SESSION["s_usuario"] === null) {
     header("Location: index.php");
 }
@@ -49,16 +51,16 @@ if ($_SESSION["s_tipo"] === "consulta") {
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <button id="btnNuevo" type="button" class="btn btn-info" data-toggle="modal"><i class="material-icons">library_add</i></button>
+            <div class="col-lg-16">
+                <button id="btnNuevo" type="button" class="btn btn-info" data-toggle="modal">Nuevo Usuario  <i class="material-icons">library_add</i></button>
             </div>
         </div>
     </div>
     <br>
 
     <div class="container caja">
-        <div class="row">
-            <div class="col-lg-12">
+        <div class="row vh-100 justify-content-center align-items-center">
+            <div class="col-lg-16">
                 <div class="table-responsive">
                     <table id="tablaUsuarios" class="table table-striped table-bordered table-condensed" style="width:100%">
                         <thead class="text-center card-text">
@@ -68,9 +70,9 @@ if ($_SESSION["s_tipo"] === "consulta") {
                                 <th>Usuario</th>
                                 <!-- <th>Contraseña</th> -->
                                 <th>Tipo</th>
-                                <th>Ultimo_inicio_de_sesion</th>
+                                <th>Último_inicio_de_sesión</th>
                                 <th>Conteo</th>
-                                <th>Fecha_de_Creacion</th>
+                                <th>Fecha_de_Creación</th>
                                 <th>Creado por</th>
                                 <th>Modificado </th>
                                 <th>Modificado por</th>
@@ -95,7 +97,7 @@ if ($_SESSION["s_tipo"] === "consulta") {
                     </button>
                 </div>
                 <form id="formUsuarios">
-                <input type="hidden" name="creador" id="creador" value="<?php echo $_SESSION['s_usuario']; ?>">
+                    <input type="hidden" name="creador" id="creador" value="<?php echo $_SESSION['s_usuario']; ?>">
                     <!-- Grupo: Email -->
                     <div class="formulario__grupo" id="grupo__correo">
                         <label for="email" class="formulario__label">Correo</label>
@@ -110,7 +112,7 @@ if ($_SESSION["s_tipo"] === "consulta") {
                     <div class="formulario__grupo" id="grupo__nombre">
                         <label for="nombre" class="formulario__label">Usuario</label>
                         <div class="formulario__grupo-input">
-                            <input type="text" class="formulario__input" name="usuario" id="usuario" placeholder="Nombre_123">
+                            <input type="text" class="formulario__input" name="usuario" id="usuario" placeholder="nombre_123">
                             <i class="formulario__validacion-estado fas fa-times-circle"></i>
                         </div>
                         <p class="formulario__input-error">El usuario tiene que ser de 4 a 16 dígitos y solo puede contener numeros, letras y guion bajo.</p>
@@ -120,7 +122,7 @@ if ($_SESSION["s_tipo"] === "consulta") {
                     <div class="formulario__grupo" id="grupo__password">
                         <label for="password" class="formulario__label">Contraseña</label>
                         <div class="formulario__grupo-input">
-                            <input type="password" class="formulario__input" name="pass" id="pass">
+                            <input type="password" placeholder="contraseña" class="formulario__input" name="pass" id="pass">
                             <i class="formulario__validacion-estado fas fa-times-circle"></i>
                         </div>
                         <p class="formulario__input-error">La contraseña tiene que ser de 4 a 12 dígitos.</p>
@@ -130,7 +132,7 @@ if ($_SESSION["s_tipo"] === "consulta") {
                     <div class="formulario__grupo" id="grupo__password2">
                         <label for="password2" class="formulario__label">Repetir Contraseña</label>
                         <div class="formulario__grupo-input">
-                            <input type="password" class="formulario__input" name="pass2" id="pass2">
+                            <input type="password" placeholder="contraseña" class="formulario__input" name="pass2" id="pass2">
                             <i class="formulario__validacion-estado fas fa-times-circle"></i>
                         </div>
                         <p class="formulario__input-error">Ambas contraseñas deben ser iguales.</p>
@@ -140,11 +142,18 @@ if ($_SESSION["s_tipo"] === "consulta") {
                     <div class="formulario__grupo" id="grupo__telefono">
                         <label for="telefono" class="formulario__label">Tipo</label>
                         <div class="formulario__grupo-input">
-                            <input type="text" class="formulario__input" name="tipo" id="tipo" placeholder="administrador | consulta">
+                            <select class="formulario__input" type="select" name="tipo" id="tipo">
+                                <option>administrador</option>
+                                <option selected>consulta</option>
+                            </select>
+
+                            <!-- <input type="text" class="formulario__input" name="tipo" id="tipo" placeholder="administrador | consulta"> -->
                             <i class="formulario__validacion-estado fas fa-times-circle"></i>
                         </div>
                         <p class="formulario__input-error">El tipo de usuario debe de ser Administrador o Consulta</p>
                     </div>
+
+                    <br>
 
                     <div class="formulario__grupo formulario__grupo-btn-enviar">
                         <button type="submit" id="btnGuardar" class="formulario__btn">Guardar</button>

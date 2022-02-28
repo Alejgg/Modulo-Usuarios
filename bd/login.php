@@ -1,9 +1,9 @@
 <?php
 session_start(); //Nos deja usar las variables de sesion
 
-include_once 'conexion.php';
-$objeto = new Conexion();
-$conexion = $objeto->Conectar();
+include_once '../bd/conexion2.php';
+$objeto = new Conexion2();
+$conexion = $objeto->Conectar2();
 
 //recepción de datos enviados mediante POST desde ajax
 $usuario = (isset($_POST['usuario'])) ? $_POST['usuario'] : '';
@@ -15,7 +15,7 @@ $pass = MD5($password); //encripto la clave enviada por el usuario
 //y almacenada en la BD
 
 //Consulta y ejecucion de usuarios
-$consulta = "SELECT * FROM usuarios WHERE email='$usuario' AND pass='$pass' ";
+$consulta = "SELECT * FROM usuarios WHERE email='$usuario' AND pass='$pass' AND deleted=0";
 $resultado = $conexion->prepare($consulta);
 $resultado->execute();
 
@@ -26,14 +26,29 @@ if ($resultado->rowCount() >= 1) {
     $_SESSION["s_usuario"] = $usuario; //Arreglo de sesiones
     $_SESSION["s_tipo"] = $data[0]["tipo"];
 
-    $consulta = "UPDATE usuarios SET login_count=login_count+1, last_login_time=CURRENT_TIMESTAMP WHERE email='$usuario' AND pass='$pass' ";
-    $resultado = $conexion->prepare($consulta);
-    $resultado->execute();
+    // $consulta = "UPDATE usuarios SET login_count=login_count+1, last_login_time=CURRENT_TIMESTAMP WHERE email='$usuario' AND pass='$pass' ";
+    // $resultado = $conexion->prepare($consulta);
+    // $resultado->execute();
 } else {
     $_SESSION["s_usuario"] = null;
     $_SESSION["s_tipo"] = null;
     $data = null;
 }
+
+print json_encode($data);
+$conexion = null;
+
+
+
+
+
+include_once '../bd/conexion.php';
+$objeto = new Conexion2();
+$conexion = $objeto->Conectar2();
+
+$consulta = "UPDATE usuarios SET login_count=login_count+1, last_login_time=CURRENT_TIMESTAMP WHERE email='$usuario' AND pass='$pass' ";
+$resultado = $conexion->prepare($consulta);
+$resultado->execute();
 
 print json_encode($data);
 $conexion = null;

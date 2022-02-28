@@ -47,6 +47,13 @@ switch ($opcion) {
             $data = null;
         }
 
+        if ($email == null || $usuario == null || $password == null || $tipo == null) {
+            echo 2;
+            return 2;
+            break;
+        }
+
+
         $pass = MD5($password);
         $consulta = "INSERT INTO `usuarios` (`email`, `usuario`, `pass`, `tipo`, `last_login_time`, `login_count`, `created_time`, `created_by`, `modified_time`, `modified_by`, `deleted`) VALUES
     ('$email', '$usuario', '$pass', '$tipo', CURRENT_TIMESTAMP, $login_count, CURRENT_TIMESTAMP, '$created_by', CURRENT_TIMESTAMP, NULL, 0)";
@@ -62,12 +69,35 @@ switch ($opcion) {
 
         break;
     case 2:
+
+
+        $consulta = "SELECT email FROM usuarios";
+        $resultado = $conexion->prepare($consulta);
+        $resultado->execute();
+        //$data = $resultado->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($resultado->rowCount() >= 1) {
+            //Esto esta raro pero sirve
+            $data = $resultado->fetchAll(PDO::FETCH_ASSOC);
+            $_SESSION["s_email"] = $data[0]["email"];
+            if ($_SESSION["s_email"] === $email) {
+                echo 4;
+                return 4;
+                break;
+            }
+        } else {
+            $_SESSION["s_usuario"] = null;  
+            $_SESSION["s_tipo"] = null;
+            $data = null;
+        }
+
+
         $pass = MD5($password);
         $consulta = "UPDATE usuarios SET email='$email', usuario='$usuario', pass='$pass', tipo='$tipo',modified_time=CURRENT_TIMESTAMP, modified_by='$created_by' WHERE id='$id'";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
-        echo 2;
-        return 2;
+        echo 3;
+        return 3;
 
         // $consulta = "SELECT * FROM usuarios WHERE deleted=0";
         // $resultado = $conexion->prepare($consulta);
@@ -75,7 +105,7 @@ switch ($opcion) {
         // $data = $resultado->fetchAll(PDO::FETCH_ASSOC);
         break;
     case 3:
-        $consulta = "UPDATE usuarios SET deleted=1 WHERE id='$id' ";
+        $consulta = "UPDATE usuarios SET deleted=1, modified_time=CURRENT_TIMESTAMP WHERE id='$id' ";
         $resultado = $conexion->prepare($consulta);
         $resultado->execute();
         break;
